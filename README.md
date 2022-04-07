@@ -1,6 +1,7 @@
 # MSiA423 Template Repository
 
 # Table of Contents
+* [Project Charter](#Project-charter)
 * [Directory structure ](#Directory-structure)
 * [Running the app ](#Running-the-app)
 	* [1. Initialize the database ](#1.-Initialize-the-database)
@@ -11,7 +12,12 @@
 * [Pylint](#Pylint)
 
 
+## Project-charter
+Vision
 
+Mission
+
+Success Criteria
 ## Directory structure 
 
 ```
