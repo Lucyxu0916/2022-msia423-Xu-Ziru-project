@@ -12,12 +12,41 @@
 * [Pylint](#Pylint)
 
 
-## Project-charter
-Vision
+## Project Charter
+### Vision
+Human body needs fat to function; however, excess fat introduces a higher risk of developing heart diseases, kidney problems, and even cancer. Since the start of COVID-19 pandemic, the CDC has suggested that obesity increases the risk of both severe illness and hospitalization due to COVID-19 infection. Consequently, it is crucial for individuals to keep track of their body fat to evaluate their health.
 
-Mission
+According to the American College of Sports Medicine, the gold standard for calculating body fat is hydrostatic (or underwater) weighing. During the test, the person is submerged in water while sitting on a scale, and the body fat percentage is calculated by comparing the land weight with the underwater weight. Apparently, measuring body fat percentage in this way is time-consuming and requires special equipment that is not easily accessible. Thus, this app aims to help users easily obtain their body fat percentage information.
 
-Success Criteria
+
+### Mission
+To better help users understand their health condition, this app will help the users to predict their body fat percentage based on their input of gender, age, weight, height, and circumference of different body parts. This app will also show the users the standard body fat percentage range based on their age and height group so that the users know if they have excess fat or not. If the users' body fat percentage is suboptimal, they could 
+make fitness plans accordingly and monitor their fitness progress. 
+
+The first dataset(https://www.kaggle.com/datasets/fedesoriano/body-fat-prediction-dataset) contains the body fat percentage, age, weight, height, and ten circumference measurements (e.g., neck, chest waist, etc..) for 252 men. The second dataset (supplemental material in https://www.tandfonline.com/doi/full/10.1080/26939169.2021.1971585#) contains the body fat percentage, age, weight, height, and fourteen circumference measurements for 184 female students. The body fat percentage in both datasets was accurately determined by an underwater weighing technique.
+
+### Success Criteria
+#### Machine learning performance metric
+The following metrics will be used to assess the model’s performance prior to deployment:
+
+1) Mean Absolute Error(MAE): MAE calculates the average absolute difference between actual and predicted values.
+
+2) Mean Squared Error(MSE): MSE calculates the average squared difference between actual and predicted values.
+
+3) R Squared: R Squared measures the proportion of the variance for the dependent variable that's explained by the independent variables in the model.
+
+4) Adjusted R Squared: Adjusted R Squared is a modified version of R-squared that has been adjusted for the number of predictors in the model.
+
+#### Business metric
+1) User Activation: Number of new users every month
+
+2) User Engagement: Number of daily/monthly active user
+
+3) User Retention: Percentage of users who return to the app after the current month
+
+4) User Satisfaction: Surveys completed by the users to rate the app and provide feedback
+
+
 ## Directory structure 
 
 ```
