@@ -14,7 +14,7 @@
 
 ## Project Charter
 ### Vision
-Human body needs fat to function; however, excess fat introduces a higher risk of developing heart diseases, kidney problems, and even cancer. Since the start of COVID-19 pandemic, the CDC has suggested that obesity increases the risk of both severe illness and hospitalization due to COVID-19 infection. Consequently, it is crucial for individuals to keep track of their body fat to evaluate their health.
+Human body needs fat to function; however, excess fat introduces a higher risk of developing heart diseases, kidney problems, and even cancer. Since the COVID-19 pandemic, the CDC has suggested that obesity increases the risk of severe illness and hospitalization due to COVID-19 infection. Consequently, it is crucial for individuals to keep track of their body fat to evaluate their health.
 
 According to the American College of Sports Medicine, the gold standard for calculating body fat is hydrostatic (or underwater) weighing. During the test, the person is submerged in water while sitting on a scale, and the body fat percentage is calculated by comparing the land weight with the underwater weight. Apparently, measuring body fat percentage in this way is time-consuming and requires special equipment that is not easily accessible. Thus, this app aims to help users easily obtain their body fat percentage information.
 
