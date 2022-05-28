@@ -1,101 +1,45 @@
+"""Configures the subparsers for receiving command line arguments for each
+ stage in the model pipeline and orchestrates their execution."""
+import argparse
 import logging.config
-import sqlite3
-import traceback
 
-import sqlalchemy.exc
-from flask import Flask, render_template, request, redirect, url_for
+from config.flaskconfig import SQLALCHEMY_DATABASE_URI
+from src.add_songs import create_db, add_song
 
-# For setting up the Flask-SQLAlchemy database session
-from src.add_songs import Tracks, TrackManager
-
-# Initialize the Flask application
-app = Flask(__name__, template_folder="app/templates",
-            static_folder="app/static")
-
-# Configure flask app from flask_config.py
-app.config.from_pyfile('config/flaskconfig.py')
-
-# Define LOGGING_CONFIG in flask_config.py - path to config file for setting
-# up the logger (e.g. config/logging/local.conf)
-logging.config.fileConfig(app.config["LOGGING_CONFIG"])
-logger = logging.getLogger(app.config["APP_NAME"])
-logger.debug(
-    'Web app should be viewable at %s:%s if docker run command maps local '
-    'port to the same port as configured for the Docker container '
-    'in config/flaskconfig.py (e.g. `-p 5000:5000`). Otherwise, go to the '
-    'port defined on the left side of the port mapping '
-    '(`i.e. -p THISPORT:5000`). If you are running from a Windows machine, '
-    'go to 127.0.0.1 instead of 0.0.0.0.', app.config["HOST"]
-    , app.config["PORT"])
-
-# Initialize the database session
-track_manager = TrackManager(app)
-
-
-@app.route('/')
-def index():
-    """Main view that lists songs in the database.
-
-    Create view into index page that uses data queried from Track database and
-    inserts it into the app/templates/index.html template.
-
-    Returns:
-        Rendered html template
-
-    """
-
-    try:
-        tracks = track_manager.session.query(Tracks).limit(
-            app.config["MAX_ROWS_SHOW"]).all()
-        logger.debug("Index page accessed")
-        return render_template('index.html', tracks=tracks)
-    except sqlite3.OperationalError as e:
-        logger.error(
-            "Error page returned. Not able to query local sqlite database: %s."
-            " Error: %s ",
-            app.config['SQLALCHEMY_DATABASE_URI'], e)
-        return render_template('error.html')
-    except sqlalchemy.exc.OperationalError as e:
-        logger.error(
-            "Error page returned. Not able to query MySQL database: %s. "
-            "Error: %s ",
-            app.config['SQLALCHEMY_DATABASE_URI'], e)
-        return render_template('error.html')
-    except:
-        traceback.print_exc()
-        logger.error("Not able to display tracks, error page returned")
-        return render_template('error.html')
-
-
-@app.route('/add', methods=['POST'])
-def add_entry():
-    """View that process a POST with new song input
-
-    Returns:
-        redirect to index page
-    """
-
-    try:
-        track_manager.add_track(artist=request.form['artist'],
-                                album=request.form['album'],
-                                title=request.form['title'])
-        logger.info("New song added: %s by %s", request.form['title'],
-                    request.form['artist'])
-        return redirect(url_for('index'))
-    except sqlite3.OperationalError as e:
-        logger.error(
-            "Error page returned. Not able to add song to local sqlite "
-            "database: %s. Error: %s ",
-            app.config['SQLALCHEMY_DATABASE_URI'], e)
-        return render_template('error.html')
-    except sqlalchemy.exc.OperationalError as e:
-        logger.error(
-            "Error page returned. Not able to add song to MySQL database: %s. "
-            "Error: %s ",
-            app.config['SQLALCHEMY_DATABASE_URI'], e)
-        return render_template('error.html')
-
+logging.config.fileConfig('config/logging/local.conf')
+logger = logging.getLogger('penny-lane-pipeline')
 
 if __name__ == '__main__':
-    app.run(debug=app.config["DEBUG"], port=app.config["PORT"],
-            host=app.config["HOST"])
+
+    # Add parsers for both creating a database and adding songs to it
+    parser = argparse.ArgumentParser(
+        description="Create and/or add data to database")
+    subparsers = parser.add_subparsers(dest='subparser_name')
+
+    # Sub-parser for creating a database
+    sp_create = subparsers.add_parser("create_db",
+                                      description="Create database")
+    sp_create.add_argument("--engine_string", default=SQLALCHEMY_DATABASE_URI,
+                           help="SQLAlchemy connection URI for database")
+
+    # Sub-parser for ingesting new data
+    sp_ingest = subparsers.add_parser("ingest",
+                                      description="Add data to database")
+    sp_ingest.add_argument("--artist", default="Emancipator",
+                           help="Artist of song to be added")
+    sp_ingest.add_argument("--title", default="Minor Cause",
+                           help="Title of song to be added")
+    sp_ingest.add_argument("--album", default="Dusk to Dawn",
+                           help="Album of song being added")
+    sp_ingest.add_argument("--engine_string",
+                           default='sqlite:///data/tracks.db',
+                           help="SQLAlchemy connection URI for database")
+
+    args = parser.parse_args()
+    sp_used = args.subparser_name
+    if sp_used == 'create_db':
+        create_db(args.engine_string)
+    elif sp_used == 'ingest':
+        add_song(args)
+    else:
+        parser.print_help()
