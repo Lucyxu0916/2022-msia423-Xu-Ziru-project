@@ -50,10 +50,10 @@ def save_cleaned_data(data: pd.DataFrame, save_path: str) -> None:
 def preprocess_data(config: dict) -> pd.DataFrame:
     """ Preprocess the data for model training
              Args:
-                config (`:obj:`dict`): Configuration dictionary
+                config (`dict`): Dictionary of configurations
 
              Returns:
-                Preprocessd data for model training
+                cleaned (`:obj:`pd.DataFrame`):Preprocessed dataset
     """
     # load raw data
     try:
