@@ -4,6 +4,7 @@ import pandas as pd
 
 logger = logging.getLogger(__name__)
 
+
 def remove_outliers(data: pd.DataFrame, column_name: str, minimum: float, maximum: float) -> pd.DataFrame:
     """ Remove outliers from the specified column based on minimum and maximum value specified
              Args:
@@ -44,3 +45,29 @@ def save_cleaned_data(data: pd.DataFrame, save_path: str) -> None:
     else:
         logger.info("Successfully save the cleaned data as %s", save_path)
         logger.debug("The shape of the cleaned data is %s", str(data.shape))
+
+
+def preprocess_data(config: dict) -> pd.DataFrame:
+    """ Preprocess the data for model training
+             Args:
+                config (`:obj:`dict`): Configuration dictionary
+
+             Returns:
+                Preprocessd data for model training
+    """
+    # load raw data
+    try:
+        path = config["preprocess"]["load_path"]
+        raw = pd.read_csv(path)
+    except FileNotFoundError as e:
+        logger.error("The specified path %s does not contain the file", path)
+        return e
+    else:
+        logger.info("Successfully load the raw data from path %s", path)
+
+    # remove outliers
+    cleaned = remove_outliers(raw, **config["preprocess"]["remove_outliers"])
+    # save preprocessed data at the specified path
+    save_cleaned_data(cleaned, config["preprocess"]["save_path"])
+
+    return cleaned
