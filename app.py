@@ -5,10 +5,9 @@ import pickle
 
 import numpy as np
 import sqlalchemy.exc
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request
 
 from src.add_bodymeasurement import UserInputManager
-from src.generate_features import extract_features, scale_feature
 
 # Initialize the Flask application
 app = Flask(__name__, template_folder="app/templates", static_folder="app/static")
@@ -98,7 +97,7 @@ def add_entry():
             forearm = request.form['forearm']
             wrist = request.form['wrist']
             user_input = [age, weight, height, neck, chest, abdomen, hip, thigh, knee, ankle, biceps, forearm, wrist]
-            user_input = np.array(user_input).reshape(1,-1)
+            user_input = np.array(user_input).reshape(1, -1)
             user_input_transformed = scaler.transform(user_input)
             user_prediction = float(model.predict(user_input_transformed))
             user_prediction = round(user_prediction, 1)
@@ -114,14 +113,13 @@ def add_entry():
             elif user_prediction >= 30:
                 body_percentage = 268
 
-
             logger.info("The predicted body fat for the user is %s", user_prediction)
 
             logger.debug("Result page accessed")
 
-            return render_template('index.html', user_prediction=user_prediction, percentage=percentage, body_percentage=body_percentage)
+            return render_template('index.html', user_prediction=user_prediction, percentage=percentage,
+                                   body_percentage=body_percentage)
 
-            #return redirect(url_for('index'), user_prediction=user_prediction, percentage=percentage, body_percentage=body_percentage)
         except sqlite3.OperationalError as e:
             logger.error(
                 "Error page returned. Not able to add song to local sqlite "
@@ -137,4 +135,4 @@ def add_entry():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5001)
+    app.run(host="0.0.0.0", port=5000)
