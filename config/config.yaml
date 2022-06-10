@@ -1,0 +1,40 @@
+preprocess:
+  load_path: "data/raw/bodyfat.csv"
+  remove_outliers:
+    column_name: "BodyFat"
+    minimum: 5
+    maximum: 50
+  save_path: "data/artifacts/cleaned_data.csv"
+get_features:
+  load_path: "data/artifacts/cleaned_data.csv"
+  features_column: ['Age', 'Weight' , 'Height', 'Neck', 'Chest','Abdomen', 'Hip', 'Thigh', 'Knee', 'Ankle', 'Biceps', 'Forearm', 'Wrist']
+  target_column: 'BodyFat'
+  scaler_path: "models/scaler.sav"
+  feature_path: "data/artifacts/features.csv"
+  target_path: "data/artifacts/target.csv"
+train:
+  feature_path: "data/artifacts/features.csv"
+  target_path: "data/artifacts/target.csv"
+  data_split:
+    test_size: 0.2
+    random_state: 1
+    save_path: "data/artifacts/"
+  model_train:
+    initial_features: ['Age', 'Weight', 'Height', 'Neck', 'Chest',
+                        'Abdomen', 'Hip', 'Thigh', 'Knee', 'Ankle',
+                        'Biceps', 'Forearm', 'Wrist']
+    alpha: 0.2
+    random_state: 1
+    save_path: "models/Lasso.sav"
+predict:
+  load_path: "data/artifacts/x_test.csv"
+  model_path: "models/Lasso.sav"
+  model_test:
+    initial_features: ['Age', 'Weight', 'Height', 'Neck', 'Chest',
+                      'Abdomen', 'Hip', 'Thigh', 'Knee', 'Ankle',
+                      'Biceps', 'Forearm', 'Wrist']
+    save_path: "data/artifacts/predictions.txt"
+evaluate:
+  test_path: "data/artifacts/y_test.csv"
+  prediction_path: "data/artifacts/predictions.txt"
+  save_path: "data/artifacts/evaluation_result.txt"
