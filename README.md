@@ -219,11 +219,15 @@ Before running the app, make sure you have completed the following:
 4. Create the relevant tables in the database connected via your ```SQLALCHEMY_DATABASE_URI``` environment variable . This can be done by running ```make database```.
 
 ### 1. Initialize Database
-The web app needs a SQL database to run. To create the relevant tables in your database, run following command.
-```make database```
+The web app needs a SQL database to run. To create the relevant tables in your database, run following command
+```bash
+make database
+```
 
 You can also create a local SQLite database to test the app by passing a SQLite engine string to the environment variable ```SQLALCHEMY_DATABASE_URI```. It does not require a username or password and replaces the host and port with the path to the database file, and it takes the following form:
-```sqlite:///data/bodyfat.db'```
+```bash
+sqlite:///data/bodyfat.db
+```
 
 If no ```SQLALCHEMY_DATABASE_URI``` environment variable is found, a default SQLite engine string ```sqlite:///data/bodyfat.db``` is used to create a local database.
 '
