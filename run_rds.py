@@ -4,10 +4,10 @@ import logging.config
 from src.add_bodymeasurement import UserInputManager, create_db
 from config.flaskconfig import SQLALCHEMY_DATABASE_URI
 
-logging.config.fileConfig('config/logging/local.conf')
-logger = logging.getLogger('rds-pipeline')
+logging.config.fileConfig("config/logging/local.conf")
+logger = logging.getLogger("rds-pipeline")
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     # Add parsers for both creating a database and adding applications to it
     parser = argparse.ArgumentParser(description="Create and/or add data to database")
@@ -39,10 +39,10 @@ if __name__ == '__main__':
     args = parser.parse_args()
     sp_used = args.subparser_name
 
-    if sp_used == 'create_db':
+    if sp_used == "create_db":
         print(args.engine_string)
         create_db(args.engine_string)
-    elif sp_used == 'ingest':
+    elif sp_used == "ingest":
         am = UserInputManager(engine_string=args.engine_string)
         am.add_user(args.name, args.age, args.height, args.weight, args.neck,
                     args.chest, args.abdomen, args.hip, args.thigh, args.knee,
