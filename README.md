@@ -19,10 +19,10 @@ Author: Ziru Xu
   * [Evaluate Model](#Evaluate-Model)
   * [Run Entire Pipeline](#Run-Entire-Pipeline)
 * [Run the app](#Run-the-app)
-  * [1 . Initialize database](#1.-Initialize-database)
-  * [2 . Configure Flask app ](#2.-Configure-Flask-app)
-  * [3 . Run the Flask app ](#3.-Run-the-Flask-app)
-  * [4 . Kill the container ](#4.-Kill-the-container)
+  * [1.Initialize database](#1-Initialize-database)
+  * [2.Configure Flask app ](#2-Configure-Flask-app)
+  * [3.Run the Flask app ](#3-Run-the-Flask-app)
+  * [4.Kill the container ](#4-Kill-the-container)
 * [Testing](#Testing)
 
 
