@@ -3,41 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <link href="static/basic.css" rel="stylesheet">
-</head>
 
+    <style>
+
+      {#h3 {#}
+      {#  text-align: center;#}
+      {#  color: #424242;#}
+      {#}#}
+      {#h4 {#}
+      {#  color: #424242;#}
+      {#}#}
+      {##}
+      {#label {#}
+      {#  text-align: justify;#}
+      {#  text-justify: inter-word;#}
+      {#  color: #424242;#}
+      {#}#}
+      {#input {#}
+      {#  text-align: justify;#}
+      {#  text-justify: inter-word;#}
+      {#  color: #424242;#}
+      {#}#}
+      {#div {#}
+      {#  text-align: center;#}
+      {#}#}
+      {#table {#}
+      {#    border-collapse: collapse;#}
+      {#    border: 1px solid gray;#}
+      {#    width: calc(50% - 10px);#}
+      {#    float: left;#}
+      {#    margin: 5px;#}
+      {#}#}
+      body {
+        background-color: #F2F2F2
+      }
+
+    </style>
+
+    <title>Body Fat Prediction</title>
+
+</head>
 <body>
+    <h1>
+         Body Fat Prediction
+    </h1>
+
     <h3>
-         <a href = "{{ url_for('index') }}">Penny Lane Music Recommender</a>
+        This body fat calculator estimates your body's percentage of body fat for YOU!
     </h3>
 
-    <hr/>
-    <table>
-         <thead>
-            <tr>
-               <th>Title</th>
-               <th>Artist</th>
-               <th>Album</th>
-            </tr>
-         </thead>
+    <h4>
+        Please enter your body measurement information below to GET PREDICTION RESULTS:
+    </h4>
 
-         <tbody>
-            {% for track in tracks %}
-               <tr>
-                   <td>{{ track.title }}</td>
-                   <td>{{ track.artist }}</td>
-                   <td>{{ track.album }}</td>
-               </tr>
-            {% endfor %}
-         </tbody>
-      </table>
-      <form action="{{ url_for('add_entry') }}" method=post class=add-entry>
+    <form action="{{ url_for('add_entry') }}" method=post class=add-entry>
       <dl>
-        <input type=text size=15 name=title placeholder="Title">
-        <input type=text size=15 name=artist placeholder="Artist">
-        <input type=text size=15 name=album placeholder="Album">
-        <input type=submit value=Add>
+           <table width="640" cellspacing="0" cellpadding="8" border="0" align="left" style="margin-left:5px;">
+              <tr>
+                <td> <label for="name">Name:</label> <input type="text" value= "Mike" id="name" name="name"> </td>
+                <td> <label for="age">Age:</label> <input type="number" value=22 id="age" name="age"> </td>
+              </tr>
+              <tr>
+                <td> <label for="height">Height:</label> <input type="number" step="0.01" value=70 id="height" name="height"> </td>
+                <td> <label for="weight">Weight:</label> <input type="number" step="0.01" value=165 id="weight" name="weight"> </td>
+              </tr>
+              <tr>
+                <td> <label for="neck"> Neck Circumstance(cm):</label> <input type="number" step="0.1" value=30 id="neck" name="neck"> </td>
+                <td> <label for="chest"> Chest Circumstance(cm):</label> <input type="number" step="0.1" value=100 id="chest" name="chest"> </td>
+              </tr>
+              <tr>
+                <td> <label for="abdomen"> Abdomen Circumstance(cm):</label> <input type="number" step="0.1" value=85 id="abdomen" name="abdomen"> </td>
+                <td> <label for="hip"> Hip Circumstance(cm):</label> <input type="number" step="0.1" value=100 id="hip" name="hip"> </td>
+              </tr>
+              <tr>
+                <td> <label for="thigh"> Thigh Circumstance(cm):</label> <input type="number" step="0.1" value=60 id="thigh" name="thigh"> </td>
+                <td> <label for="knee"> Knee Circumstance(cm):</label> <input type="number" step="0.1" value=80 id="knee" name="knee"> </td>
+              </tr>
+              <tr>
+                <td> <label for="ankle"> Ankle Circumstance(cm):</label> <input type="number" step="0.1" value=23 id="ankle" name="ankle"> </td>
+                <td> <label for="biceps"> Biceps Circumstance(cm):</label> <input type="number" step="0.1" value=35 id="biceps" name="biceps"> </td>
+              </tr>
+              <tr>
+                <td> <label for="forearm"> Forearm Circumstance(cm):</label> <input type="number" step="0.1" value=25 id="forearm" name="forearm"> </td>
+                <td> <label for="wrist"> Wrist Circumstance(cm):</label> <input type="number" step="0.1" value=18 id="wrist" name="wrist"> </td>
+              </tr>
+
+              <tr>
+
+                    <td>
+
+                        <input type="image" src="//d26tpo4cm8sb6k.cloudfront.net/img/svg/calculate.svg" value="Calculate" alt="Calculate">
+
+                    </td>
+               </tr>
+          </table>
+
       </dl>
     </form>
+
+    </div>
+
+    <div class="upperresult">
+        <h2 class="h2result">Result</h2>
+           <p class="verybigtext"><font color="green">
+                <b>Body Fat: {{ user_prediction }}%</b></font></p>
+
+        <table width="320" cellspacing="0" cellpadding="0" border="0" align="left" style="margin-left:5px;">
+            <tbody>
+                <tr>
+                    <td>
+                    <div style="margin-left: {{percentage}}px;">{{ user_prediction }}%<br>
+                        <img src="//d26tpo4cm8sb6k.cloudfront.net/img/arrow-down.png">
+                    </div>
+                    </td>
+            </tr>
+            <tr>
+                <td>
+                    <img src="//d26tpo4cm8sb6k.cloudfront.net/img/body-fat-man.png" width="320">
+                </td>
+            </tr>
+            </tbody>
+      </table>
+
+      <table width="320" cellspacing="0" cellpadding="0" border="0" align="left" style="margin-right:5px;">
+            <tbody>
+                 <tr>
+                    <td>
+                    <div style="margin-left: {{body_percentage}}px;">You are here <br>
+                        <img src="//d26tpo4cm8sb6k.cloudfront.net/img/arrow-down.png">
+                    </div>
+                    </td>
+                </tr>
+                <tr>
+                <td><img src="https://www.topendsports.com/testing/images/bodyfat-visual-reference-men.gif" width="320"></td>
+                </tr>
+            </tbody>
+    </table>
+    </div>
 
 </body>
 </html>
