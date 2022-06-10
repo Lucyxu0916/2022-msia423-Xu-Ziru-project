@@ -247,7 +247,7 @@ MAX_ROWS_SHOW = 100 # Limits the number of rows returned from the database
 To run the Flask app, run: 
 
 ```bash
- make run_app
+make run_app
 ```
 You should be able to access the app at http://127.0.0.1:5001/ in your browser (Mac/Linux should also be able to access the app at http://127.0.0.1:5001/ or localhost:5001/) .
 
@@ -274,7 +274,7 @@ The name will be provided in the right most column.
 Once you have built the image final-project-tests for testing by running `make test_image`. You can run the following to run uint tests:
 
 ```bash
-  make run_test
+make run_test
 ```
 
 The following command will be executed within the container to run the provided unit tests under `tests/`:  
