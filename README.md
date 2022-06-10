@@ -11,11 +11,18 @@ Author: Ziru Xu
   * [Docker Image](#Docker-Image)
   * [Build Image](#Build-Image)
 * [Model pipeline](#Model-pipeline)
-* [Initialize database](#Initialize-database)
+  * [Download Raw Data from S3](#Download-Raw-Data-from-S3)
+  * [Preprocess Data](#Preprocess-Data)
+  * [Generate Features](#Generate-Features)
+  * [Train Model](#Train-Model)
+  * [Score Model](#Score-Model)
+  * [Evaluate Model](#Evaluate-Model)
+  * [Run Entire Pipeline](#Run-Entire-Pipeline)
 * [Run the app](#Run-the-app)
-  * [1. Initialize the database ](#1.-Initialize-the-database)
+  * [1. Initialize database](#1.-Initialize-database)
   * [2. Configure Flask app ](#2.-Configure-Flask-app)
   * [3. Run the Flask app ](#3.-Run-the-Flask-app)
+  * [4. Kill the container ](#4.-Kill-the-container)
 * [Testing](#Testing)
 
 
@@ -199,15 +206,6 @@ You can evaluate the model performance by running ```make evaluate```. This step
 You can run the entire model pipeline by using ```make model-pipeline```
 This command will run the entire model pipeline mentioned above, from downloading the raw data from s3, preprocessing data, generating features, training the model, scoring the model, all the way to evaluating model performance.
 
-## Initialize Database
-The web app needs a SQL database to run. To create the relevant tables in your database, run following command.
-```make database```
-
-You can also create a local SQLite database to test the app by passing a SQLite engine string to the environment variable ```SQLALCHEMY_DATABASE_URI```. It does not require a username or password and replaces the host and port with the path to the database file, and it takes the following form:
-```sqlite:///data/bodyfat.db'```
-
-If no ```SQLALCHEMY_DATABASE_URI``` environment variable is found, a default SQLite engine string ```sqlite:///data/bodyfat.db``` is used to create a local database.
-'
 
 ## Run the App
 Before running the app, make sure you have completed the following:
@@ -220,7 +218,16 @@ Before running the app, make sure you have completed the following:
 
 4. Create the relevant tables in the database connected via your ```SQLALCHEMY_DATABASE_URI``` environment variable . This can be done by running ```make database```.
 
-### Configure Flask app
+### 1. Initialize Database
+The web app needs a SQL database to run. To create the relevant tables in your database, run following command.
+```make database```
+
+You can also create a local SQLite database to test the app by passing a SQLite engine string to the environment variable ```SQLALCHEMY_DATABASE_URI```. It does not require a username or password and replaces the host and port with the path to the database file, and it takes the following form:
+```sqlite:///data/bodyfat.db'```
+
+If no ```SQLALCHEMY_DATABASE_URI``` environment variable is found, a default SQLite engine string ```sqlite:///data/bodyfat.db``` is used to create a local database.
+'
+### 2. Configure Flask app
 
 `config/flaskconfig.py` holds the configurations for the Flask app. It includes the following configurations:
 
@@ -235,7 +242,7 @@ SQLALCHEMY_TRACK_MODIFICATIONS = True
 SQLALCHEMY_ECHO = False  # If true, SQL for queries made will be printed
 MAX_ROWS_SHOW = 100 # Limits the number of rows returned from the database 
 ```
-### Run the Flask app 
+### 3. Run the Flask app 
 
 To run the Flask app, run: 
 
@@ -246,7 +253,7 @@ You should be able to access the app at http://127.0.0.1:5001/ in your browser (
 
 Note: If `PORT` in `config/flaskconfig.py` is changed, this port should be changed accordingly (as should the `EXPOSE 5001` line in `dockerfiles/Dockerfile.app`)
 
-### Kill the container 
+### 4. Kill the container 
 
 Once finished with the app, you will need to kill the container. If you named the container, you can execute the following: 
 
