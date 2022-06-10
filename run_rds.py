@@ -20,7 +20,6 @@ if __name__ == '__main__':
 
     # Sub-parser for ingesting new data
     sb_ingest = subparsers.add_parser("ingest", description="Add data to database")
-    # sb_ingest.add_argument("--id", help="App user's id")
     sb_ingest.add_argument("--name", help="App user's name")
     sb_ingest.add_argument("--age", help="App user's age")
     sb_ingest.add_argument("--height", help="App user's height in inches")
@@ -41,6 +40,7 @@ if __name__ == '__main__':
     sp_used = args.subparser_name
 
     if sp_used == 'create_db':
+        print(args.engine_string)
         create_db(args.engine_string)
     elif sp_used == 'ingest':
         am = UserInputManager(engine_string=args.engine_string)
