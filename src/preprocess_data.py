@@ -21,6 +21,7 @@ def remove_outliers(data: pd.DataFrame, column_name: str, minimum: float, maximu
         df = df.drop(data[data[column_name] > maximum].index)
     except KeyError as e:
         logger.error("The key %s does not exist in the data", str(e))
+        raise e
     else:
         logger.info("Successfully remove the outliers from %s column", column_name)
 

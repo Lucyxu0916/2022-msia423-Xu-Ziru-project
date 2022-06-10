@@ -14,8 +14,8 @@ Base: typing.Any = declarative_base()
 
 
 class UserInput(Base):
-    """Creates a data model for the database to be set up for capturing body measurement info.
-    """
+    """Creates a data model for the database to be set up for capturing body measurement info."""
+
     __tablename__ = 'UserInputs'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -115,8 +115,9 @@ class UserInputManager:
                              knee=knee, ankle=ankle, biceps=biceps, forearm=forearm, wrist=wrist)
             session.add(user)
             session.commit()
-        except sqlalchemy.exc.OperationalError:
+        except sqlalchemy.exc.OperationalError as e:
             logger.error('Failed to connect to server. '
                          'Please check if you are connected to Northwestern VPN')
+            raise e
         else:
             logger.info("The user's body measurement information is added to database")

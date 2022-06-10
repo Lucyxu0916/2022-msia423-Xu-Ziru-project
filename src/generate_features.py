@@ -10,11 +10,12 @@ logger = logging.getLogger(__name__)
 
 def extract_features(data: pd.DataFrame, features_column: typing.List) -> pd.DataFrame:
     """ Extract features from dataframe
-             Args:
-                data (`:obj:`pd.DataFrame`): Dataframe
-                features_column(`list` of `str`):  Column names for features
-             Returns:
-                features (`:obj:`pd.DataFrame`): Feature dataframe
+     Args:
+        data (`:obj:`pd.DataFrame`): Dataframe
+        features_column(`list` of `str`):  Column names for features
+
+     Returns:
+        features (`:obj:`pd.DataFrame`): Feature dataframe
     """
 
     try:
@@ -30,16 +31,18 @@ def extract_features(data: pd.DataFrame, features_column: typing.List) -> pd.Dat
 
 def extract_target(data: pd.DataFrame, target_column: str) -> pd.DataFrame:
     """ Extract features from dataframe
-             Args:
-                data (`:obj:`pd.DataFrame`): Dataframe
-                target_column(`list` of `str`):  Column name for target
-             Returns:
-                target (`:obj:`pd.DataFrame`): Target dataframe
+     Args:
+        data (`:obj:`pd.DataFrame`): Dataframe
+        target_column(`list` of `str`):  Column name for target
+
+     Returns:
+        target (`:obj:`pd.DataFrame`): Target dataframe
     """
     try:
         target = data[target_column]
     except KeyError as e:
         logger.error("The key %s does not exist in the data", str(e))
+        raise e
     else:
         logger.info("Successfully extract target %s", str(target_column))
 
@@ -48,11 +51,12 @@ def extract_target(data: pd.DataFrame, target_column: str) -> pd.DataFrame:
 
 def scale_feature(feature: pd.DataFrame, scaler_path: str) -> pd.DataFrame:
     """ Extract features from dataframe
-            Args:
-               feature (`:obj:`pd.DataFrame`): The feature dataframe
-               scaler_path (`str`): The path to save the scaler
-            Returns:
-               scaled_feature (`:obj:`pd.DataFrame`): The scaled feature dataframe
+    Args:
+       feature (`:obj:`pd.DataFrame`): The feature dataframe
+       scaler_path (`str`): The path to save the scaler
+
+    Returns:
+       scaled_feature (`:obj:`pd.DataFrame`): The scaled feature dataframe
     """
     # standardize features
     scaler = StandardScaler()
@@ -80,12 +84,12 @@ def scale_feature(feature: pd.DataFrame, scaler_path: str) -> pd.DataFrame:
 
 def save_data(data: pd.DataFrame, save_path: str) -> None:
     """ Save data to the specified path
-             Args:
-                data (`:obj:`pd.DataFrame`): Cleaned dataframe
-                save_path (`str`): The path to save the cleaned data
+     Args:
+        data (`:obj:`pd.DataFrame`): Cleaned dataframe
+        save_path (`str`): The path to save the cleaned data
 
-             Returns:
-                None
+     Returns:
+        None
     """
     # save the data to the save_path
     try:
