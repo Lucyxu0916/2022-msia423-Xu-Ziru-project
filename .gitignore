@@ -8,7 +8,8 @@ __pycache__/
 .ipynb_checkpoints/
 
 
-data/*
+data/raw/*
+data/artifacts/*
 models/*
 !data/sample/
 !data/external/
