@@ -41,7 +41,7 @@ data/artifacts/evaluation_result.txt:data/artifacts/predictions.txt config/confi
 
 evaluate: data/artifacts/evaluation_result.txt
 
-all: clean pipeline-image download_from_s3 cleaned features train predict evaluate
+all: clean pipeline_image download_from_s3 cleaned features train predict evaluate
 
 .PHONY: test_image, run_test, test
 test_image:
