@@ -43,7 +43,7 @@ The dataset(https://www.kaggle.com/datasets/fedesoriano/body-fat-prediction-data
 #### Machine learning performance metric
 The following metrics will be used to assess the model’s performance prior to deployment:
 
-1) Mean Absolute Error(MAE): MAE calculates the average absolute difference between actual and predicted values.
+1) Mean Absolute Error Percentage(MAPE): MAE calculates the average absolute difference between actual and predicted values divide by actual value.
 
 2) Mean Squared Error(MSE): MSE calculates the average squared difference between actual and predicted values.
 
@@ -51,6 +51,7 @@ The following metrics will be used to assess the model’s performance prior to 
 
 4) Adjusted R Squared: Adjusted R Squared is a modified version of R-squared that has been adjusted for the number of predictors in the model.
 
+Given the small sample size in the data, the model is considered as successful if MAPE is smaller than 25% and R Squared is greater than 60%.
 #### Business metric
 1) User Activation: Number of new users every month
 
