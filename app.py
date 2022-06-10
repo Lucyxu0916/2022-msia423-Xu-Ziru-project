@@ -16,7 +16,9 @@ app = Flask(__name__, template_folder="app/templates", static_folder="app/static
 app.config.from_pyfile("config/flaskconfig.py")
 
 # Configure logger
-logger = logging.getLogger(__name__)
+LOGGING_CONFIG = "config/logging/local.conf"
+logging.config.fileConfig(LOGGING_CONFIG, disable_existing_loggers=True)
+logger = logging.getLogger("Body Fat App")
 
 # Initialize the database session
 application_manager = UserInputManager(app)
@@ -25,19 +27,19 @@ try:
     model_path = "models/Lasso.sav"
     model = pickle.load(open(model_path, 'rb'))
 except FileNotFoundError as e:
-    logger.error("The model file does not exist at " + model_path)
+    logger.error("The model file does not exist at %s", model_path)
     raise e
 else:
-    logger.info("Successfully load the model from " + model_path)
+    logger.info("Successfully load the model from %s", model_path)
 
 try:
     scaler_path = "models/scaler.sav"
     scaler = pickle.load(open(scaler_path, 'rb'))
 except FileNotFoundError as e:
-    logger.error("The scalar file does not exist at " + scaler_path)
+    logger.error("The scalar file does not exist at %s", scaler_path)
     raise e
 else:
-    logger.info("Successfully load the scalar from " + scaler_path)
+    logger.info("Successfully load the scalar from %s", scaler_path)
 
 
 @app.route('/')
@@ -53,8 +55,8 @@ def index():
 
 @app.route('/result', methods=['POST', 'GET'])
 def add_entry():
-    """View that process a POST with new applicant input
-    Add new applicant information to Applications database and get prediction results
+    """View that process a POST with new user input
+    Add new user body measurement information to UserInputs database and get prediction results
     Returns:
         rendered html template located at: app/templates/result.html if successfully processed,
         rendered html template located at: app/templates/error.html if any error occurs
@@ -63,26 +65,7 @@ def add_entry():
         return "Visit the homepage to add applicants and get predictions"
     elif request.method == 'POST':
         try:
-            # Add user body information to RDS for future usages
-            application_manager.add_user(
-                name=request.form['name'],
-                age=request.form['age'],
-                height=request.form['height'],
-                weight=request.form['weight'],
-                neck=request.form['neck'],
-                chest=request.form['chest'],
-                abdomen=request.form['abdomen'],
-                hip=request.form['hip'],
-                thigh=request.form['thigh'],
-                knee=request.form['knee'],
-                ankle=request.form['ankle'],
-                biceps=request.form['biceps'],
-                forearm=request.form['forearm'],
-                wrist=request.form['wrist']
-            )
-
-            logger.info("New user body measurement is added")
-
+            name = request.form['name']
             age = request.form['age']
             weight = request.form['weight']
             height = request.form['height']
@@ -97,8 +80,21 @@ def add_entry():
             forearm = request.form['forearm']
             wrist = request.form['wrist']
             user_input = [age, weight, height, neck, chest, abdomen, hip, thigh, knee, ankle, biceps, forearm, wrist]
+
+            # Add user body information to RDS for future usages
+
+            application_manager.add_user(name, age, weight, height, neck, chest, abdomen, hip, thigh, knee,
+                                             ankle, biceps, forearm, wrist)
+            logger.info("New user body measurement is added %s", user_input)
+
+            user_input = [age, weight, height, neck, chest, abdomen, hip, thigh, knee, ankle, biceps, forearm, wrist]
+            for _input in user_input:
+                if not _input:
+                    return render_template('error.html', msg="Error! Please input a value for input fields.")
             user_input = np.array(user_input).reshape(1, -1)
+            # scale user input
             user_input_transformed = scaler.transform(user_input)
+            # generate prediction
             user_prediction = float(model.predict(user_input_transformed))
             user_prediction = round(user_prediction, 1)
             percentage = user_prediction * 7
@@ -122,17 +118,19 @@ def add_entry():
 
         except sqlite3.OperationalError as e:
             logger.error(
-                "Error page returned. Not able to add song to local sqlite "
+                "Error page returned. Not able to add user input to local sqlite "
                 "database: %s. Error: %s ",
                 app.config['SQLALCHEMY_DATABASE_URI'], e)
-            return render_template('error.html')
+            return render_template('error.html',
+                                   msg="We are sorry. There was a problem accessing the database. Please try back later.")
         except sqlalchemy.exc.OperationalError as e:
             logger.error(
-                "Error page returned. Not able to add song to MySQL database: %s. "
+                "Error page returned. Not able to add user input to MySQL database: %s. "
                 "Error: %s ",
                 app.config['SQLALCHEMY_DATABASE_URI'], e)
-            return render_template('error.html')
+            return render_template('error.html',
+                                   msg="We are sorry. There was a problem accessing the database. Please try back later.")
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host=app.config['HOST'], port=app.config['PORT'], debug=app.config['DEBUG'])
