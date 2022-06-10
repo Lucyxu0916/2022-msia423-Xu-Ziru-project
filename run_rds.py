@@ -40,7 +40,6 @@ if __name__ == "__main__":
     sp_used = args.subparser_name
 
     if sp_used == "create_db":
-        print(args.engine_string)
         create_db(args.engine_string)
     elif sp_used == "ingest":
         am = UserInputManager(engine_string=args.engine_string)
