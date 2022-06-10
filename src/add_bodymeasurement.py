@@ -55,7 +55,7 @@ def create_db(engine_string: str) -> None:
         logger.error('Failed to connect to server. '
                      'Please check if you are connected to Northwestern VPN')
     else:
-        logger.info("Database created at %s", engine_string)
+        logger.info('Database created at %s', engine_string)
 
 
 class UserInputManager:
@@ -76,7 +76,7 @@ class UserInputManager:
             self.session = session_maker()
         else:
             raise ValueError(
-                "Need either an engine string or a Flask app to initialize")
+                'Need either an engine string or a Flask app to initialize')
 
     def close(self) -> None:
         """Closes SQLAlchemy session
@@ -120,4 +120,4 @@ class UserInputManager:
                          'Please check if you are connected to Northwestern VPN')
             raise e
         else:
-            logger.info("The user's body measurement information is added to database")
+            logger.info('The body measurement information is added to database')
