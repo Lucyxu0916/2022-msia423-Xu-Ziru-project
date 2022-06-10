@@ -147,8 +147,10 @@ To configure RDS credential, run the following command in terminal to load your 
 ```bash
 export SQLALCHEMY_DATABASE_URI = "YOUR_DATABASE_URI"
 ```
-Note: Please remember to change  "YOUR_DATABASE_URI"  above to your own ```SQLALCHEMY_DATABASE_URI```.
-
+Note: Please remember to change  "YOUR_DATABASE_URI"  above to your own ```SQLALCHEMY_DATABASE_URI```, and you can run the following command to check if the credential is set up correctly.
+```bash
+echo $SQLALCHEMY_DATABASE_URI
+```
 
 ## Docker
 ### Docker Image
